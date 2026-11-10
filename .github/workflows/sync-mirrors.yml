@@ -125,7 +125,15 @@ jobs:
           echo "reflete : $(git rev-parse HEAD) ($(git rev-list --count HEAD) commits, $(git ls-files | wc -l) fichiers)"
           git remote add target "https://x-access-token:${SYNC_TOKEN}@github.com/${ORG}/${NAME}.git"
           git push --force target "HEAD:refs/heads/${BRANCH}" 2>&1 | tail -3
+          # tail masque le code de sortie du push : sans PIPESTATUS un refus
+          # 403 laissait le job au vert en pretendant avoir refleter l'amont.
+          push_status=${PIPESTATUS[0]}
           git push --force --tags target 2>/dev/null | tail -1 || true
+          pushed_head=$(git ls-remote target "refs/heads/${BRANCH}" | cut -f1)
+          if [ "$push_status" -ne 0 ] || [ "$pushed_head" != "$(git rev-parse HEAD)" ]; then
+            echo "::error title=Publication refusee::local $(git rev-parse HEAD), distant ${pushed_head:-aucune branche} — voir le message remote ci-dessus"
+            exit 1
+          fi
           if [ "$TYPE" != "svn" ]; then
             local_head=$(git rev-parse HEAD)
             remote_head=$(git ls-remote "$URL" "refs/heads/${BRANCH}" | cut -f1)
