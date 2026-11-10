@@ -499,6 +499,71 @@
    "name": "Windows-2022-CIS-Audit",
    "upstream": "ansible-lockdown/Windows-2022-CIS-Audit",
    "branch": "benchmark_v4.0.0"
+  },
+  {
+   "name": "attack-arsenal",
+   "upstream": "mitre-attack/attack-arsenal",
+   "branch": "master"
+  },
+  {
+   "name": "attack-data-model",
+   "upstream": "mitre-attack/attack-data-model",
+   "branch": "main"
+  },
+  {
+   "name": "attack-navigator",
+   "upstream": "mitre-attack/attack-navigator",
+   "branch": "master"
+  },
+  {
+   "name": "attack-stix-data",
+   "upstream": "mitre-attack/attack-stix-data",
+   "branch": "master"
+  },
+  {
+   "name": "attack-website",
+   "upstream": "mitre-attack/attack-website",
+   "branch": "master"
+  },
+  {
+   "name": "attack-workbench-deployment",
+   "upstream": "mitre-attack/attack-workbench-deployment",
+   "branch": "main"
+  },
+  {
+   "name": "attack-workbench-frontend",
+   "upstream": "mitre-attack/attack-workbench-frontend",
+   "branch": "main"
+  },
+  {
+   "name": "attack-workbench-rest-api",
+   "upstream": "mitre-attack/attack-workbench-rest-api",
+   "branch": "main"
+  },
+  {
+   "name": "attack-workbench-taxii-server",
+   "upstream": "mitre-attack/attack-workbench-taxii-server",
+   "branch": "main"
+  },
+  {
+   "name": "bzar",
+   "upstream": "mitre-attack/bzar",
+   "branch": "master"
+  },
+  {
+   "name": "car",
+   "upstream": "mitre-attack/car",
+   "branch": "master"
+  },
+  {
+   "name": "caret",
+   "upstream": "mitre-attack/caret",
+   "branch": "master"
+  },
+  {
+   "name": "mitreattack-python",
+   "upstream": "mitre-attack/mitreattack-python",
+   "branch": "main"
   }
  ]
 }
