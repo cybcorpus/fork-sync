@@ -79,10 +79,13 @@ jobs:
           TRUNK: ${{ matrix.svn_trunk }}
           SVN_HTTPS: ${{ matrix.svn_https }}
         run: |
+          # L'image debian-slim n'a pas git : indispensable aux deux modes,
+          # et actions/checkout n'est pas utilise dans ce job.
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends git ca-certificates
           if [ "$TYPE" = "svn" ]; then
             # Conversion SVN -> git : dump du trunk, chargement local, clone git svn.
-            apt-get update -qq
-            apt-get install -y -qq --no-install-recommends subversion git-svn python3 git ca-certificates
+            apt-get install -y -qq --no-install-recommends subversion git-svn python3
             git config --global user.name "mirror-sync"
             git config --global user.email "mirror-sync@users.noreply.github.com"
             if ! svnrdump dump --non-interactive "$URL/$TRUNK" > /tmp/src.svn 2>/tmp/dump.err; then
