@@ -1,0 +1,82 @@
+name: Synchronisation des miroirs
+
+# Amonts non GitHub (Bitbucket, GitLab...) : merge-upstream ne s'applique pas.
+# Le miroir est un reflet exact : clone de l'amont puis push --force. Aucun
+# commit local n'est attendu dans ces depots, c'est pourquoi l'ecrasement
+# est volontaire et sans risque.
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+      timezone: "Europe/Paris"
+  workflow_dispatch:
+    inputs:
+      mirror:
+        description: "Un seul miroir (vide = tous)"
+        required: false
+        default: ""
+
+concurrency:
+  group: mirror-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    name: Matrice
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      count: ${{ steps.build.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construire la matrice
+        id: build
+        env:
+          ONLY: ${{ inputs.mirror }}
+        run: |
+          if [ -n "$ONLY" ]; then
+            jq -c --arg m "$ONLY" '{include: [.mirrors[] | select(.name == $m)]}' mirrors.json > /tmp/m.json
+            n=$(jq '.include | length' /tmp/m.json)
+            if [ "$n" -eq 0 ]; then
+              echo "::error title=Miroir inconnu::$ONLY absent de mirrors.json"
+              exit 1
+            fi
+          else
+            jq -c '{include: .mirrors}' mirrors.json > /tmp/m.json
+          fi
+          echo "matrix=$(cat /tmp/m.json)" >> "$GITHUB_OUTPUT"
+          echo "count=$(jq '.include | length' /tmp/m.json)" >> "$GITHUB_OUTPUT"
+
+  mirror:
+    name: ${{ matrix.name }}
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Refleter l'amont
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          ORG: ${{ github.repository_owner }}
+          NAME: ${{ matrix.name }}
+          URL: ${{ matrix.url }}
+          BRANCH: ${{ matrix.branch }}
+        run: |
+          git clone --quiet "$URL" src || {
+            echo "::error title=Amont injoignable::$URL"; exit 1; }
+          cd src
+          git remote add target "https://x-access-token:${SYNC_TOKEN}@github.com/${ORG}/${NAME}.git"
+          git push --force target "HEAD:refs/heads/${BRANCH}" 2>&1 | tail -3
+          git push --force --tags target 2>/dev/null | tail -1 || true
+          local_head=$(git rev-parse HEAD)
+          remote_head=$(git ls-remote "$URL" "refs/heads/${BRANCH}" | cut -f1)
+          if [ "$local_head" != "$remote_head" ]; then
+            echo "::warning title=Course avec l'amont::clone ${local_head}, amont ${remote_head} — reflet au prochain passage"
+          fi
+          echo "reflete : ${local_head} ($(git rev-list --count HEAD) commits, $(git ls-files | wc -l) fichiers)"

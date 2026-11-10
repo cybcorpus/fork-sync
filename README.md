@@ -43,3 +43,16 @@ publics : le renseigner sur le dépôt évite cette ambiguïté.
 - **organisation `ansible-lockdown`** : GitHub ne permet pas de forker une
   organisation. Les dépôts actifs ont été forkés un par un — les dépôts
   archivés sont exclus, un fork archivé ne pouvant plus être mis à jour.
+
+## Miroirs d'amonts non GitHub
+
+`mirrors.json` couvre les amonts que GitHub ne peut pas forker (Bitbucket,
+GitLab). `sync-mirrors.yml` clone l'amont et force-pousse le reflet : ces
+dépôts ne reçoivent aucun commit local.
+
+| Miroir | Amont |
+|---|---|
+| `cis-controls-v8.1_oscal` | `bitbucket.org/cis-it-workspace/cis-controls-v8.1_oscal` |
+
+Ajouter un miroir = une entrée dans `mirrors.json`, aucun fichier à déposer
+dans le dépôt cible.

@@ -1,0 +1,9 @@
+{
+ "mirrors": [
+  {
+   "name": "cis-controls-v8.1_oscal",
+   "url": "https://bitbucket.org/cis-it-workspace/cis-controls-v8.1_oscal.git",
+   "branch": "main"
+  }
+ ]
+}
