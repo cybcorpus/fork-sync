@@ -1,9 +1,13 @@
 name: Synchronisation des miroirs
 
-# Amonts non GitHub (Bitbucket, GitLab...) : merge-upstream ne s'applique pas.
-# Le miroir est un reflet exact : clone de l'amont puis push --force. Aucun
-# commit local n'est attendu dans ces depots, c'est pourquoi l'ecrasement
-# est volontaire et sans risque.
+# Amonts non GitHub (Bitbucket, Subversion...) : merge-upstream ne s'applique
+# pas. Le miroir est un reflet exact de l'amont, pousse en --force : ces
+# depots ne recoivent aucun commit local, l'ecrasement est donc voulu.
+#
+# Un miroir peut cibler une autre organisation que celle du hub via "owner".
+# Cela permet a un seul depot de piloter des miroirs disperses avec un seul
+# secret, et evite de deposer un workflow dans le depot cible (ou il serait
+# efface par le reflet lui-meme).
 
 on:
   schedule:
@@ -63,20 +67,62 @@ jobs:
       - name: Refleter l'amont
         env:
           SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
-          ORG: ${{ github.repository_owner }}
+          ORG: ${{ matrix.owner || github.repository_owner }}
           NAME: ${{ matrix.name }}
           URL: ${{ matrix.url }}
           BRANCH: ${{ matrix.branch }}
+          TYPE: ${{ matrix.type }}
+          TRUNK: ${{ matrix.svn_trunk }}
+          SVN_HTTPS: ${{ matrix.svn_https }}
         run: |
-          git clone --quiet "$URL" src || {
-            echo "::error title=Amont injoignable::$URL"; exit 1; }
-          cd src
+          if [ "$TYPE" = "svn" ]; then
+            # Conversion SVN -> git : dump du trunk, chargement local, clone git svn.
+            apt-get update -qq
+            apt-get install -y -qq --no-install-recommends subversion git-svn python3 git ca-certificates
+            git config --global user.name "mirror-sync"
+            git config --global user.email "mirror-sync@users.noreply.github.com"
+            if ! svnrdump dump --non-interactive "$URL/$TRUNK" > /tmp/src.svn 2>/tmp/dump.err; then
+              echo "::warning title=svn:// injoignable::nouvelle tentative via $SVN_HTTPS"
+              svnrdump dump --non-interactive "$SVN_HTTPS/$TRUNK" > /tmp/src.svn
+            fi
+            revs=$(grep -c '^Revision-number' /tmp/src.svn)
+            echo "dump : $(( $(stat -c %s /tmp/src.svn) / 1048576 )) Mio, $revs revisions"
+            if [ "$revs" -lt 100 ]; then
+              echo "::error title=Dump incomplet::$revs revisions seulement"; exit 1
+            fi
+            svnadmin create /tmp/svnrepo
+            svnadmin load -q /tmp/svnrepo < /tmp/src.svn
+            # Les auteurs SVN sont des identifiants nus : git exige nom + adresse.
+            # Table figee, sinon les SHA changeraient a chaque passage.
+            svn log -q -r 1:HEAD file:///tmp/svnrepo > /tmp/svn-log.txt
+            # awk plutot qu'un heredoc : le terminateur d'un heredoc ne peut pas
+            # etre indenté dans un bloc YAML, il ne fermerait jamais.
+            svn log -q -r 1:HEAD file:///tmp/svnrepo \
+              | awk -F'|' 'NF>=2 {gsub(/^[ \t]+|[ \t]+$/,"",$1); gsub(/^[ \t]+|[ \t]+$/,"",$2); if ($1 ~ /^r[0-9]+$/ && $2 != "") print $2}' \
+              | sort -u > /tmp/svn-authors.txt
+            { cat /tmp/svn-authors.txt; echo "(no author)"; } \
+              | awk '{n=($0=="(no author)"?"unknown-svn-author":$0); print $0" = "n" <"n"@users.sourceforge.net>"}' \
+              > /tmp/authors.txt
+            echo "auteurs mappes : $(wc -l < /tmp/authors.txt)"
+            # --rewrite-root fige la ligne git-svn-id sur l'URL amont reelle :
+            # sans cela deux executions produisent des SHA differents.
+            git svn clone -A /tmp/authors.txt --trunk="$TRUNK" --quiet \
+              --rewrite-root="$URL" file:///tmp/svnrepo src
+            cd src
+            git branch -M "$BRANCH"
+          else
+            git clone --quiet "$URL" src || {
+              echo "::error title=Amont injoignable::$URL"; exit 1; }
+            cd src
+          fi
+          echo "reflete : $(git rev-parse HEAD) ($(git rev-list --count HEAD) commits, $(git ls-files | wc -l) fichiers)"
           git remote add target "https://x-access-token:${SYNC_TOKEN}@github.com/${ORG}/${NAME}.git"
           git push --force target "HEAD:refs/heads/${BRANCH}" 2>&1 | tail -3
           git push --force --tags target 2>/dev/null | tail -1 || true
-          local_head=$(git rev-parse HEAD)
-          remote_head=$(git ls-remote "$URL" "refs/heads/${BRANCH}" | cut -f1)
-          if [ "$local_head" != "$remote_head" ]; then
-            echo "::warning title=Course avec l'amont::clone ${local_head}, amont ${remote_head} — reflet au prochain passage"
+          if [ "$TYPE" != "svn" ]; then
+            local_head=$(git rev-parse HEAD)
+            remote_head=$(git ls-remote "$URL" "refs/heads/${BRANCH}" | cut -f1)
+            if [ "$local_head" != "$remote_head" ]; then
+              echo "::warning title=Course avec l'amont::clone ${local_head}, amont ${remote_head} — reflet au prochain passage"
+            fi
           fi
-          echo "reflete : ${local_head} ($(git rev-list --count HEAD) commits, $(git ls-files | wc -l) fichiers)"
