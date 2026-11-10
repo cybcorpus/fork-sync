@@ -1,0 +1,504 @@
+{
+ "forks": [
+  {
+   "name": "cheatsheet_typst",
+   "upstream": "MengYueqi/cheatsheet_typst",
+   "branch": "main"
+  },
+  {
+   "name": "obsidian_prompts",
+   "upstream": "DanielBoigk/obsidian_prompts",
+   "branch": "master"
+  },
+  {
+   "name": "quartz",
+   "upstream": "jackyzha0/quartz",
+   "branch": "v5"
+  },
+  {
+   "name": "Open-Source-Security-Guide",
+   "upstream": "mikeroyal/Open-Source-Security-Guide",
+   "branch": "main"
+  },
+  {
+   "name": "lynis",
+   "upstream": "CISOfy/lynis",
+   "branch": "master"
+  },
+  {
+   "name": "Linux-Server-Hardening-Secure-Configuration",
+   "upstream": "NATTOMR/Linux-Server-Hardening-Secure-Configuration.",
+   "branch": "main"
+  },
+  {
+   "name": "CIS-PDF-to-Excel",
+   "upstream": "refabr1k/CIS-PDF-to-Excel",
+   "branch": "main"
+  },
+  {
+   "name": "ansible",
+   "upstream": "ansible/ansible",
+   "branch": "devel"
+  },
+  {
+   "name": "harness",
+   "upstream": "harness/harness",
+   "branch": "main"
+  },
+  {
+   "name": "RHEL6-STIG",
+   "upstream": "ansible-lockdown/RHEL6-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL5-STIG",
+   "upstream": "ansible-lockdown/RHEL5-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL7-CIS",
+   "upstream": "ansible-lockdown/RHEL7-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL7-STIG",
+   "upstream": "ansible-lockdown/RHEL7-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "POSTGRES-9-STIG",
+   "upstream": "ansible-lockdown/POSTGRES-9-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2016-CIS",
+   "upstream": "ansible-lockdown/Windows-2016-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2016-STIG",
+   "upstream": "ansible-lockdown/Windows-2016-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2019-CIS",
+   "upstream": "ansible-lockdown/Windows-2019-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2019-STIG",
+   "upstream": "ansible-lockdown/Windows-2019-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL8-CIS",
+   "upstream": "ansible-lockdown/RHEL8-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL8-STIG",
+   "upstream": "ansible-lockdown/RHEL8-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "APACHE-2.4-STIG",
+   "upstream": "ansible-lockdown/APACHE-2.4-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "TOMCAT-9-STIG",
+   "upstream": "ansible-lockdown/TOMCAT-9-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "APACHE-2.4-CIS",
+   "upstream": "ansible-lockdown/APACHE-2.4-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Benchmark-Generator",
+   "upstream": "ansible-lockdown/Benchmark-Generator",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU18-CIS",
+   "upstream": "ansible-lockdown/UBUNTU18-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU20-CIS",
+   "upstream": "ansible-lockdown/UBUNTU20-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Kubernetes1.6.1-CIS",
+   "upstream": "ansible-lockdown/Kubernetes1.6.1-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "POSTGRES-12-CIS",
+   "upstream": "ansible-lockdown/POSTGRES-12-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL7-STIG-Audit",
+   "upstream": "ansible-lockdown/RHEL7-STIG-Audit",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL7-CIS-Audit",
+   "upstream": "ansible-lockdown/RHEL7-CIS-Audit",
+   "branch": "main"
+  },
+  {
+   "name": "UBUNTU18-STIG",
+   "upstream": "ansible-lockdown/UBUNTU18-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL8-CIS-Audit",
+   "upstream": "ansible-lockdown/RHEL8-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "AZURE-CIS",
+   "upstream": "ansible-lockdown/AZURE-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "AWS-FOUNDATIONS-CIS",
+   "upstream": "ansible-lockdown/AWS-FOUNDATIONS-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2016-CIS-Audit",
+   "upstream": "ansible-lockdown/Windows-2016-CIS-Audit",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL8-STIG-Audit",
+   "upstream": "ansible-lockdown/RHEL8-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU20-CIS-Audit",
+   "upstream": "ansible-lockdown/UBUNTU20-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU18-CIS-Audit",
+   "upstream": "ansible-lockdown/UBUNTU18-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "Windows-2022-CIS",
+   "upstream": "ansible-lockdown/Windows-2022-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-10-STIG",
+   "upstream": "ansible-lockdown/Windows-10-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2019-CIS-Audit",
+   "upstream": "ansible-lockdown/Windows-2019-CIS-Audit",
+   "branch": "devel"
+  },
+  {
+   "name": "WinFWADV-STIG-Audit",
+   "upstream": "ansible-lockdown/WinFWADV-STIG-Audit",
+   "branch": "devel"
+  },
+  {
+   "name": "WinFWADV-STIG",
+   "upstream": "ansible-lockdown/WinFWADV-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL9-CIS",
+   "upstream": "ansible-lockdown/RHEL9-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL9-CIS-Audit",
+   "upstream": "ansible-lockdown/RHEL9-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "CISCO-IOS-L2S-STIG",
+   "upstream": "ansible-lockdown/CISCO-IOS-L2S-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "CISCO-IOS-RTR-STIG",
+   "upstream": "ansible-lockdown/CISCO-IOS-RTR-STIG",
+   "branch": "main"
+  },
+  {
+   "name": "AMAZON2-CIS-Audit",
+   "upstream": "ansible-lockdown/AMAZON2-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "AMAZON2-CIS",
+   "upstream": "ansible-lockdown/AMAZON2-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU22-CIS-Audit",
+   "upstream": "ansible-lockdown/UBUNTU22-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU22-CIS",
+   "upstream": "ansible-lockdown/UBUNTU22-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "KUBERNETES-STIG",
+   "upstream": "ansible-lockdown/KUBERNETES-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "MPG-AL-READTHEDOCS",
+   "upstream": "ansible-lockdown/MPG-AL-READTHEDOCS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2022-STIG",
+   "upstream": "ansible-lockdown/Windows-2022-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU20-STIG",
+   "upstream": "ansible-lockdown/UBUNTU20-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "ansible-sign",
+   "upstream": "ansible-lockdown/ansible-sign",
+   "branch": "main"
+  },
+  {
+   "name": "github_linux_IaC",
+   "upstream": "ansible-lockdown/github_linux_IaC",
+   "branch": "self_hosted"
+  },
+  {
+   "name": "github_windows_IaC",
+   "upstream": "ansible-lockdown/github_windows_IaC",
+   "branch": "self_hosted"
+  },
+  {
+   "name": "AMAZON2023-CIS",
+   "upstream": "ansible-lockdown/AMAZON2023-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "action.playbook",
+   "upstream": "ansible-lockdown/action.playbook",
+   "branch": "master"
+  },
+  {
+   "name": "AMAZON2023-CIS-Audit",
+   "upstream": "ansible-lockdown/AMAZON2023-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "Windows-11-CIS",
+   "upstream": "ansible-lockdown/Windows-11-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-10-CIS",
+   "upstream": "ansible-lockdown/Windows-10-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "DEBIAN11-CIS",
+   "upstream": "ansible-lockdown/DEBIAN11-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL9-STIG",
+   "upstream": "ansible-lockdown/RHEL9-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL9-STIG-Audit",
+   "upstream": "ansible-lockdown/RHEL9-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "ansible-terrapin-ssh",
+   "upstream": "ansible-lockdown/ansible-terrapin-ssh",
+   "branch": "main"
+  },
+  {
+   "name": "DEBIAN11-CIS-Audit",
+   "upstream": "ansible-lockdown/DEBIAN11-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "DEBIAN12-CIS",
+   "upstream": "ansible-lockdown/DEBIAN12-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU24-CIS",
+   "upstream": "ansible-lockdown/UBUNTU24-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "DEBIAN12-CIS-Audit",
+   "upstream": "ansible-lockdown/DEBIAN12-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU24-CIS-Audit",
+   "upstream": "ansible-lockdown/UBUNTU24-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU22-STIG-Audit",
+   "upstream": "ansible-lockdown/UBUNTU22-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "RHEL10-CIS",
+   "upstream": "ansible-lockdown/RHEL10-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU22-STIG",
+   "upstream": "ansible-lockdown/UBUNTU22-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "SUSE15-CIS-Audit",
+   "upstream": "ansible-lockdown/SUSE15-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "Windows-11-STIG",
+   "upstream": "ansible-lockdown/Windows-11-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL10-CIS-Audit",
+   "upstream": "ansible-lockdown/RHEL10-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU24-STIG-Audit",
+   "upstream": "ansible-lockdown/UBUNTU24-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "SUSE15-CIS",
+   "upstream": "ansible-lockdown/SUSE15-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-Test",
+   "upstream": "ansible-lockdown/Windows-Test",
+   "branch": "devel"
+  },
+  {
+   "name": "Windows-2025-CIS",
+   "upstream": "ansible-lockdown/Windows-2025-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU24-STIG",
+   "upstream": "ansible-lockdown/UBUNTU24-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "DEBIAN13-CIS-Audit",
+   "upstream": "ansible-lockdown/DEBIAN13-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "AMAZON2023-STIG-Audit",
+   "upstream": "ansible-lockdown/AMAZON2023-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "UBUNTU26-CIS",
+   "upstream": "ansible-lockdown/UBUNTU26-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "DEBIAN13-CIS",
+   "upstream": "ansible-lockdown/DEBIAN13-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU26-CIS-Audit",
+   "upstream": "ansible-lockdown/UBUNTU26-CIS-Audit",
+   "branch": "benchmark_1.0.0"
+  },
+  {
+   "name": "SUSE16-CIS-Audit",
+   "upstream": "ansible-lockdown/SUSE16-CIS-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "SUSE16-CIS",
+   "upstream": "ansible-lockdown/SUSE16-CIS",
+   "branch": "devel"
+  },
+  {
+   "name": "AMAZON2023-STIG",
+   "upstream": "ansible-lockdown/AMAZON2023-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "RHEL10-STIG-Audit",
+   "upstream": "ansible-lockdown/RHEL10-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "RHEL10-STIG",
+   "upstream": "ansible-lockdown/RHEL10-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "AL-github-stats",
+   "upstream": "ansible-lockdown/AL-github-stats",
+   "branch": "main"
+  },
+  {
+   "name": "Windows-2025-STIG",
+   "upstream": "ansible-lockdown/Windows-2025-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU26-STIG",
+   "upstream": "ansible-lockdown/UBUNTU26-STIG",
+   "branch": "devel"
+  },
+  {
+   "name": "UBUNTU26-STIG-Audit",
+   "upstream": "ansible-lockdown/UBUNTU26-STIG-Audit",
+   "branch": "latest"
+  },
+  {
+   "name": "Windows-11-CIS-Audit",
+   "upstream": "ansible-lockdown/Windows-11-CIS-Audit",
+   "branch": "benchmark_v3.0.0"
+  },
+  {
+   "name": "Windows-2025-CIS-Audit",
+   "upstream": "ansible-lockdown/Windows-2025-CIS-Audit",
+   "branch": "benchmark_v1.0.0"
+  },
+  {
+   "name": "Windows-2022-CIS-Audit",
+   "upstream": "ansible-lockdown/Windows-2022-CIS-Audit",
+   "branch": "benchmark_v4.0.0"
+  }
+ ]
+}

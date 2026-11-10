@@ -1,0 +1,110 @@
+name: Synchronisation des forks
+
+# Un seul workflow pour tous les forks du compte : chaque entree de forks.json
+# est fusionnee avec son amont via l'API merge-upstream. Ajouter un fork =
+# une ligne dans forks.json, aucun fichier a dupliquer dans le fork.
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+      timezone: "Europe/Paris"
+  workflow_dispatch:
+    inputs:
+      fork:
+        description: "Un seul fork a synchroniser (vide = tous)"
+        required: false
+        default: ""
+
+concurrency:
+  group: fork-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    name: Matrice
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      count: ${{ steps.build.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Construire la matrice
+        id: build
+        env:
+          ONLY: ${{ inputs.fork }}
+        run: |
+          if [ -n "$ONLY" ]; then
+            jq -c --arg f "$ONLY" \
+              '{include: [.forks[] | select(.name == $f) | {name, upstream, branch}]}' \
+              forks.json > /tmp/matrix.json
+            n=$(jq '.include | length' /tmp/matrix.json)
+            if [ "$n" -eq 0 ]; then
+              echo "::error title=Fork inconnu::$ONLY absent de forks.json"
+              exit 1
+            fi
+          else
+            jq -c '{include: [.forks[] | {name, upstream, branch}]}' forks.json > /tmp/matrix.json
+          fi
+          echo "matrix=$(cat /tmp/matrix.json)" >> "$GITHUB_OUTPUT"
+          echo "count=$(jq '.include | length' /tmp/matrix.json)" >> "$GITHUB_OUTPUT"
+          echo "forks a traiter : $(jq '.include | length' /tmp/matrix.json)"
+
+  sync:
+    name: ${{ matrix.name }}
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Fusionner l'amont
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          FORK: ${{ matrix.name }}
+          UPSTREAM: ${{ matrix.upstream }}
+          BRANCH: ${{ matrix.branch }}
+        run: |
+          code=$(curl -s -o /tmp/resp.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $SYNC_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/arbrefleur/${FORK}/merge-upstream" \
+            -d "{\"branch\":\"${BRANCH}\"}")
+          case "$code" in
+            200)
+              echo "deja a jour ou fusion faite : $(jq -r '.merge_type // "?"' /tmp/resp.json) (amont ${UPSTREAM})"
+              ;;
+            409)
+              echo "::warning title=Conflit de fusion::${FORK} diverge de ${UPSTREAM} — fusion manuelle requise, rien n'a ete ecrase"
+              ;;
+            403|404)
+              echo "::warning title=Fork inaccessible::${FORK} a repondu ${code} — amont ${UPSTREAM} supprime, renomme, ou jeton sans droit"
+              ;;
+            *)
+              echo "::error title=Echec::${FORK} -> HTTP ${code} : $(jq -r '.message // ""' /tmp/resp.json)"
+              exit 1
+              ;;
+          esac
+
+  report:
+    name: Recapitulatif
+    needs: [plan, sync]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resume
+        run: |
+          {
+            echo "### Synchronisation des forks"
+            echo ""
+            echo "- Forks traites : ${{ needs.plan.outputs.count }}"
+            echo "- Etat du job : ${{ needs.sync.result }}"
+            echo ""
+            echo "Chaque fork apparait comme un job ci-dessus. Les \`warning\` signalent"
+            echo "un conflit de fusion ou un fork inaccessible : aucun contenu n'est ecrase."
+          } >> "$GITHUB_STEP_SUMMARY"

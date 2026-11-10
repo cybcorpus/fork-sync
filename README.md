@@ -1,0 +1,41 @@
+# fork-sync
+
+Un seul workflow pour maintenir à jour **tous les forks** de ce compte.
+
+Chaque entrée de `forks.json` est fusionnée avec son amont via
+`POST /repos/arbrefleur/{fork}/merge-upstream`. Ajouter un fork = ajouter
+une entrée dans `forks.json` : aucun fichier à déposer dans le fork.
+
+## Fonctionnement
+
+| Élément | Valeur |
+|---|---|
+| Fréquence | chaque lundi 05:00 (Europe/Paris) |
+| Manuel | Actions → Synchronisation des forks → Run workflow |
+| Fork unique | champ `fork`, ex. `lynis` |
+| Parallélisme | 6 forks à la fois |
+
+## Résultats
+
+| Situation | Effet |
+|---|---|
+| `200` | fork à jour, ou fusion effectuée |
+| `409` conflit | `warning` — le fork a des commits locaux, **rien n'est écrasé** |
+| `403` / `404` | `warning` — amont supprimé, renommé, ou jeton sans droit |
+
+Le job par fork n'échoue que sur une erreur inattendue, pour ne pas masquer
+les autres forks par un `fail-fast`.
+
+## Secret
+
+`SYNC_TOKEN` (Secrets → Actions) : PAT classic du compte, scope `repo`.
+Sans lui, l'API `merge-upstream` répond `403`.
+
+## Origine des forks
+
+- dépôts individuels : `cheatsheet_typst`, `obsidian_prompts`, `quartz`,
+  `Open-Source-Security-Guide`, `lynis`, `Linux-Server-Hardening-Secure-Configuration`,
+  `CIS-PDF-to-Excel`, `ansible`, `harness` ;
+- **organisation `ansible-lockdown`** : GitHub ne permet pas de forker une
+  organisation. Les dépôts actifs ont été forkés un par un — les dépôts
+  archivés sont exclus, un fork archivé ne pouvant plus être mis à jour.
