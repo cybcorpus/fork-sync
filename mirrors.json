@@ -4,15 +4,6 @@
    "name": "cis-controls-v8.1_oscal",
    "url": "https://bitbucket.org/cis-it-workspace/cis-controls-v8.1_oscal.git",
    "branch": "main"
-  },
-  {
-   "name": "eidors-svn",
-   "owner": "tomocorpus",
-   "url": "svn://svn.code.sf.net/p/eidors3d/code",
-   "branch": "master",
-   "type": "svn",
-   "svn_trunk": "trunk",
-   "svn_https": "https://svn.code.sf.net/p/eidors3d/code"
   }
  ]
 }

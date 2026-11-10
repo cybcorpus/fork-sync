@@ -54,5 +54,9 @@ dépôts ne reçoivent aucun commit local.
 |---|---|
 | `cis-controls-v8.1_oscal` | `bitbucket.org/cis-it-workspace/cis-controls-v8.1_oscal` |
 
+Le miroir SVN `tomocorpus/eidors-svn` n'est pas ici : le jeton de ce hub ne
+couvre que `cybcorpus`. Il est pilote par `sync-mirrors.yml` de
+`tomocorpus/tomography-corpus`, dont le `SYNC_TOKEN` couvre tout `tomocorpus`.
+
 Ajouter un miroir = une entrée dans `mirrors.json`, aucun fichier à déposer
 dans le dépôt cible.
