@@ -1,6 +1,8 @@
 name: Synchronisation des forks
 
-# Un seul workflow pour tous les forks du compte : chaque entree de forks.json
+# Un seul workflow pour tous les forks de l'organisation.
+# ORG vient de github.repository_owner : le depot peut changer d'org sans
+# retoucher le workflow. : chaque entree de forks.json
 # est fusionnee avec son amont via l'API merge-upstream. Ajouter un fork =
 # une ligne dans forks.json, aucun fichier a dupliquer dans le fork.
 
@@ -66,6 +68,7 @@ jobs:
       - name: Fusionner l'amont
         env:
           SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          ORG: ${{ github.repository_owner }}
           FORK: ${{ matrix.name }}
           UPSTREAM: ${{ matrix.upstream }}
           BRANCH: ${{ matrix.branch }}
@@ -73,7 +76,7 @@ jobs:
           code=$(curl -s -o /tmp/resp.json -w '%{http_code}' -X POST \
             -H "Authorization: Bearer $SYNC_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/arbrefleur/${FORK}/merge-upstream" \
+            "https://api.github.com/repos/${ORG}/${FORK}/merge-upstream" \
             -d "{\"branch\":\"${BRANCH}\"}")
           case "$code" in
             200)

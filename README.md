@@ -1,9 +1,9 @@
 # fork-sync
 
-Un seul workflow pour maintenir à jour **tous les forks** de ce compte.
+Un seul workflow pour maintenir à jour **tous les forks** de l'organisation.
 
 Chaque entrée de `forks.json` est fusionnée avec son amont via
-`POST /repos/arbrefleur/{fork}/merge-upstream`. Ajouter un fork = ajouter
+`POST /repos/{org}/{fork}/merge-upstream`. Ajouter un fork = ajouter
 une entrée dans `forks.json` : aucun fichier à déposer dans le fork.
 
 ## Fonctionnement
@@ -28,8 +28,12 @@ les autres forks par un `fail-fast`.
 
 ## Secret
 
-`SYNC_TOKEN` (Secrets → Actions) : PAT classic du compte, scope `repo`.
+`SYNC_TOKEN` (Secrets → Actions, **au niveau du dépôt**) : PAT classic d'un
+compte membre de l'organisation, scope `repo` + `workflow`.
 Sans lui, l'API `merge-upstream` répond `403`.
+
+Un secret d'organisation ne suffit pas si son accès est restreint aux dépôts
+publics : le renseigner sur le dépôt évite cette ambiguïté.
 
 ## Origine des forks
 
